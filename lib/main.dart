@@ -39,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'KasKu',
+      title: 'Lapangan',
       debugShowCheckedModeBanner: false,
       home: page,
     );
