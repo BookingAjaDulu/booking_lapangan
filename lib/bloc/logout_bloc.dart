@@ -1,4 +1,4 @@
-import 'package:keuanganpribadi/helpers/user_info.dart';
+import 'package:booking_lapangan/helpers/user_info.dart';
 
 class LogoutBloc {
   static Future logout() async {
