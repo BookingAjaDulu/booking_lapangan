@@ -19,7 +19,7 @@ class _LapanganPageState extends State<LapanganPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('List Lapangan Keuangan'),
+        title: const Text('List Booking Lapangan'),
         actions: [
           Padding(
               padding: const EdgeInsets.only(right: 20.0),
