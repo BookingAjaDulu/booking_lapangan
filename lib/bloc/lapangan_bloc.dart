@@ -4,27 +4,29 @@ import 'package:booking_lapangan/helpers/api.dart';
 import 'package:booking_lapangan/helpers/api_url.dart';
 import 'package:booking_lapangan/model/lapangan.dart';
 
-class LapanganBloc {
-  static Future<List<Lapangan>> getLapangans() async {
+class LapangBloc {
+  static Future<List<Lapang>> getLapangs() async {
     Uri apiUrl =
-        Uri.parse(ApiUrl.listLapangan); // Use Uri.parse to convert to Uri
+        Uri.parse(ApiUrl.listLapang); // Use Uri.parse to convert to Uri
     var response = await Api().get(apiUrl);
     var jsonObj = json.decode(response.body);
-    List<dynamic> listLapangan = (jsonObj as Map<String, dynamic>)['data'];
-    List<Lapangan> lapangans = [];
-    for (int i = 0; i < listLapangan.length; i++) {
-      lapangans.add(Lapangan.fromJson(listLapangan[i]));
+    List<dynamic> listLapang = (jsonObj as Map<String, dynamic>)['data'];
+    List<Lapang> lapangs = [];
+    for (int i = 0; i < listLapang.length; i++) {
+      lapangs.add(Lapang.fromJson(listLapang[i]));
     }
-    return lapangans;
+    return lapangs;
   }
 
-  static Future addLapangan({Lapangan? lapangan}) async {
-    String apiUrl = ApiUrl.createLapangan;
+  static Future addLapang({Lapang? lapang}) async {
+    String apiUrl = ApiUrl.createLapang;
 
     var body = {
-      "kode_lapangan": lapangan!.kodeLapangan,
-      "nama_lapangan": lapangan.namaLapangan,
-      "nominal": lapangan.nominalLapangan.toString()
+      "nama_lapang": lapang!.namaLapang,
+      "tanggal": lapang.Tanggal,
+      "jam_mulai": lapang.jamMulai,
+      "total_jam_main": lapang.totalJamMain,
+      "nominal": lapang.nominal.toString()
     };
     print("Body : $body");
     var response = await Api().post(apiUrl, body);
@@ -32,13 +34,15 @@ class LapanganBloc {
     return jsonObj['status'];
   }
 
-  static Future<bool> updateLapangan({required Lapangan lapangan}) async {
-    String apiUrl = ApiUrl.updateLapangan(lapangan.id!);
+  static Future<bool> updateLapang({required Lapang lapang}) async {
+    String apiUrl = ApiUrl.updateLapang(lapang.id!);
 
     var body = {
-      "kode_lapangan": lapangan.kodeLapangan,
-      "nama_lapangan": lapangan.namaLapangan,
-      "nominal": lapangan.nominalLapangan.toString()
+      "nama_lapang": lapang.namaLapang,
+      "tanggal": lapang.Tanggal,
+      "jam_mulai": lapang.jamMulai,
+      "total_jam_main": lapang.totalJamMain,
+      "nominal": lapang.nominal.toString()
     };
     print("Body : $body");
     var response = await Api().post(apiUrl, body);
@@ -46,8 +50,8 @@ class LapanganBloc {
     return jsonObj['data'];
   }
 
-  static Future<bool> deleteLapangan({int? id}) async {
-    String apiUrl = ApiUrl.deleteLapangan(id!);
+  static Future<bool> deleteLapang({int? id}) async {
+    String apiUrl = ApiUrl.deleteLapang(id!);
 
     var response = await Api().delete(apiUrl);
     var jsonObj = json.decode(response.body);

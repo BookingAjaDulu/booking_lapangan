@@ -27,7 +27,7 @@ class _MyAppState extends State<MyApp> {
     var token = await UserInfo().getToken();
     if (token != null) {
       setState(() {
-        page = const LapanganPage();
+        page = const LapangPage();
       });
     } else {
       setState(() {

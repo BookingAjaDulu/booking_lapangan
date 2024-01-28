@@ -4,24 +4,26 @@ import 'package:booking_lapangan/model/lapangan.dart';
 import 'package:booking_lapangan/ui/lapangan_page.dart';
 import 'package:booking_lapangan/widget/warning_dialog.dart';
 
-class LapanganForm extends StatefulWidget {
-  Lapangan? lapangan;
+class LapangForm extends StatefulWidget {
+  Lapang? lapang;
 
-  LapanganForm({Key? key, this.lapangan}) : super(key: key);
+  LapangForm({Key? key, this.lapang}) : super(key: key);
 
   @override
-  _LapanganFormState createState() => _LapanganFormState();
+  _LapangFormState createState() => _LapangFormState();
 }
 
-class _LapanganFormState extends State<LapanganForm> {
+class _LapangFormState extends State<LapangForm> {
   final _formKey = GlobalKey<FormState>();
   bool _isLoading = false;
   String judul = "TAMBAH TRANSAKSI";
   String tombolSubmit = "SIMPAN";
 
-  final _kodeLapanganTextboxController = TextEditingController();
-  final _namaLapanganTextboxController = TextEditingController();
-  final _nominalLapanganTextboxController = TextEditingController();
+  final _namaLapangTextboxController = TextEditingController();
+  final _TanggalTextboxController = TextEditingController();
+  final _jamMulaiTextboxController = TextEditingController();
+  final _totalJamMainTextboxController = TextEditingController();
+  final _nominalTextboxController = TextEditingController();
 
   @override
   void initState() {
@@ -30,17 +32,18 @@ class _LapanganFormState extends State<LapanganForm> {
   }
 
   isUpdate() {
-    if (widget.lapangan != null) {
+    if (widget.lapang != null) {
       setState(() {
-        judul = "UBAH PRODUK";
+        judul = "UBAH BOOKING";
         tombolSubmit = "UBAH";
-        _kodeLapanganTextboxController.text = widget.lapangan!.kodeLapangan!;
-        _namaLapanganTextboxController.text = widget.lapangan!.namaLapangan!;
-        _nominalLapanganTextboxController.text =
-            widget.lapangan!.nominalLapangan.toString();
+        _namaLapangTextboxController.text = widget.lapang!.namaLapang!;
+        _TanggalTextboxController.text = widget.lapang!.Tanggal!;
+        _jamMulaiTextboxController.text = widget.lapang!.jamMulai!;
+        _totalJamMainTextboxController.text = widget.lapang!.totalJamMain!;
+        _nominalTextboxController.text = widget.lapang!.nominal.toString();
       });
     } else {
-      judul = "TAMBAH TRANSAKSI";
+      judul = "TAMBAH BOOKING";
       tombolSubmit = "SIMPAN";
     }
   }
@@ -56,9 +59,11 @@ class _LapanganFormState extends State<LapanganForm> {
             key: _formKey,
             child: Column(
               children: [
-                _kodeLapanganTextField(),
-                _namaLapanganTextField(),
-                _nominalLapanganTextField(),
+                _namaLapangTextField(),
+                _TanggalTextField(),
+                _jamMulaiTextField(),
+                _totalJamMainTextField(),
+                _nominalTextField(),
                 _buttonSubmit()
               ],
             ),
@@ -68,46 +73,76 @@ class _LapanganFormState extends State<LapanganForm> {
     );
   }
 
-  //Membuat Textbox Kode Lapangan
-  Widget _kodeLapanganTextField() {
+  //Membuat Textbox Nama Lapang
+  Widget _namaLapangTextField() {
     return TextFormField(
-      decoration: const InputDecoration(labelText: "Kode Lapangan"),
+      decoration: const InputDecoration(labelText: "Nama Lapang"),
       keyboardType: TextInputType.text,
-      controller: _kodeLapanganTextboxController,
+      controller: _namaLapangTextboxController,
       validator: (value) {
         if (value!.isEmpty) {
-          return "Kode Lapangan harus diisi";
+          return "Nama Lapang harus di isi";
         }
         return null;
       },
     );
   }
 
-  //Membuat Textbox Nama Lapangan
-  Widget _namaLapanganTextField() {
+  //Membuat Textbox Tanggal Lapang
+  Widget _TanggalTextField() {
     return TextFormField(
-      decoration: const InputDecoration(labelText: "Nama Lapangan"),
+      decoration: const InputDecoration(labelText: "Tanggal"),
       keyboardType: TextInputType.text,
-      controller: _namaLapanganTextboxController,
+      controller: _TanggalTextboxController,
       validator: (value) {
         if (value!.isEmpty) {
-          return "Nama Lapangan harus diisi";
+          return "Tanggal harus di isi";
         }
         return null;
       },
     );
   }
 
-  //Membuat Textbox Nominal Lapangan
+  //Membuat Textbox Jam Mulai
+  Widget _jamMulaiTextField() {
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "Jam Mulai"),
+      keyboardType: TextInputType.text,
+      controller: _jamMulaiTextboxController,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "Jam Mulai harus di isi";
+        }
+        return null;
+      },
+    );
+  }
 
-  Widget _nominalLapanganTextField() {
+  //Membuat Textbox Total Jam Main
+  Widget _totalJamMainTextField() {
+    return TextFormField(
+      decoration: const InputDecoration(labelText: "Total Jam Main"),
+      keyboardType: TextInputType.text,
+      controller: _totalJamMainTextboxController,
+      validator: (value) {
+        if (value!.isEmpty) {
+          return "Total Jam Main harus di isi";
+        }
+        return null;
+      },
+    );
+  }
+
+  //Membuat Textbox Nominal Lapang
+
+  Widget _nominalTextField() {
     return TextFormField(
       decoration: const InputDecoration(labelText: "Nominal"),
       keyboardType: TextInputType.number,
-      controller: _nominalLapanganTextboxController,
+      controller: _nominalTextboxController,
       validator: (value) {
         if (value!.isEmpty) {
-          return "Nominal harus diisi";
+          return "Nominal harus di isi";
         }
 
         return null;
@@ -123,11 +158,11 @@ class _LapanganFormState extends State<LapanganForm> {
           var validate = _formKey.currentState!.validate();
           if (validate) {
             if (!_isLoading) {
-              if (widget.lapangan != null) {
-                //kondisi update produk
+              if (widget.lapang != null) {
+                //kondisi update booking
                 ubah();
               } else {
-                //kondisi tambah produk
+                //kondisi tambah booking
                 simpan();
               }
             }
@@ -139,14 +174,16 @@ class _LapanganFormState extends State<LapanganForm> {
     setState(() {
       _isLoading = true;
     });
-    Lapangan createLapangan = Lapangan(id: null);
-    createLapangan.kodeLapangan = _kodeLapanganTextboxController.text;
-    createLapangan.namaLapangan = _namaLapanganTextboxController.text;
-    createLapangan.nominalLapangan =
-        int.parse(_nominalLapanganTextboxController.text);
-    LapanganBloc.addLapangan(lapangan: createLapangan).then((value) {
+    Lapang createLapang = Lapang(id: null);
+    createLapang.namaLapang = _namaLapangTextboxController.text;
+    createLapang.Tanggal = _TanggalTextboxController.text;
+    createLapang.jamMulai = _jamMulaiTextboxController.text;
+    createLapang.totalJamMain = _totalJamMainTextboxController.text;
+    createLapang.nominal =
+        int.parse(_nominalTextboxController.text);
+    LapangBloc.addLapang(lapang: createLapang).then((value) {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (BuildContext context) => const LapanganPage()));
+          builder: (BuildContext context) => const LapangPage()));
     }, onError: (error) {
       showDialog(
           context: context,
@@ -163,15 +200,17 @@ class _LapanganFormState extends State<LapanganForm> {
     setState(() {
       _isLoading = true;
     });
-    Lapangan updateLapangan = Lapangan(id: null);
-    updateLapangan.id = widget.lapangan!.id;
-    updateLapangan.kodeLapangan = _kodeLapanganTextboxController.text;
-    updateLapangan.namaLapangan = _namaLapanganTextboxController.text;
-    updateLapangan.nominalLapangan =
-        int.parse(_nominalLapanganTextboxController.text);
-    LapanganBloc.updateLapangan(lapangan: updateLapangan).then((value) {
+    Lapang updateLapang = Lapang(id: null);
+    updateLapang.id = widget.lapang!.id;
+    updateLapang.namaLapang = _namaLapangTextboxController.text;
+    updateLapang.Tanggal = _TanggalTextboxController.text;
+    updateLapang.jamMulai = _jamMulaiTextboxController.text;
+    updateLapang.totalJamMain = _totalJamMainTextboxController.text;
+    updateLapang.nominal =
+        int.parse(_nominalTextboxController.text);
+    LapangBloc.updateLapang(lapang: updateLapang).then((value) {
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (BuildContext context) => const LapanganPage(),
+        builder: (BuildContext context) => const LapangPage(),
       ));
     }, onError: (error) {
       showDialog(

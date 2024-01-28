@@ -5,35 +5,43 @@ import 'package:booking_lapangan/ui/lapangan_form.dart';
 import 'package:booking_lapangan/ui/lapangan_page.dart';
 import 'package:booking_lapangan/widget/warning_dialog.dart';
 
-class LapanganDetail extends StatefulWidget {
-  Lapangan? lapangan;
+class LapangDetail extends StatefulWidget {
+  Lapang? lapang;
 
-  LapanganDetail({Key? key, this.lapangan}) : super(key: key);
+  LapangDetail({Key? key, this.lapang}) : super(key: key);
 
   @override
-  _LapanganDetailState createState() => _LapanganDetailState();
+  _LapangDetailState createState() => _LapangDetailState();
 }
 
-class _LapanganDetailState extends State<LapanganDetail> {
+class _LapangDetailState extends State<LapangDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Detail Lapangan'),
+        title: const Text('Detail Lapang'),
       ),
       body: Center(
         child: Column(
           children: [
             Text(
-              "Kode : ${widget.lapangan!.kodeLapangan}",
+              "Nama : ${widget.lapang!.namaLapang}",
               style: const TextStyle(fontSize: 20.0),
             ),
             Text(
-              "Nama : ${widget.lapangan!.namaLapangan}",
+              "Tanggal : ${widget.lapang!.Tanggal}",
               style: const TextStyle(fontSize: 18.0),
             ),
             Text(
-              "Nominal : Rp. ${widget.lapangan!.nominalLapangan.toString()}",
+              "JamMulai : ${widget.lapang!.jamMulai}",
+              style: const TextStyle(fontSize: 18.0),
+            ),
+            Text(
+              "TotalJamMain : ${widget.lapang!.totalJamMain}",
+              style: const TextStyle(fontSize: 18.0),
+            ),
+            Text(
+              "Nominal : Rp. ${widget.lapang!.nominal.toString()}",
               style: const TextStyle(fontSize: 18.0),
             ),
             _tombolHapusEdit()
@@ -54,8 +62,8 @@ class _LapanganDetailState extends State<LapanganDetail> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => LapanganForm(
-                            lapangan: widget.lapangan,
+                      builder: (context) => LapangForm(
+                            lapang: widget.lapang,
                           )));
             }),
         //Tombol Hapus
@@ -67,14 +75,14 @@ class _LapanganDetailState extends State<LapanganDetail> {
 
   void confirmHapus() {
     AlertDialog alertDialog = AlertDialog(
-      content: const Text("Yakin ingin menghapus data ini?"),
+      content: const Text("Anda Yakin ingin menghapus data ini?"),
       actions: [
         //tombol hapus
         OutlinedButton(
           child: const Text("Ya"),
           onPressed: () {
-            int lapanganId = widget.lapangan!.id!;
-            hapus(lapanganId);
+            int lapangId = widget.lapang!.id!;
+            hapus(lapangId);
             Navigator.pop(context);
           },
         ),
@@ -90,14 +98,14 @@ class _LapanganDetailState extends State<LapanganDetail> {
   }
 
   hapus(int id) {
-    LapanganBloc.deleteLapangan(id: id).then((bool success) {
+    LapangBloc.deleteLapang(id: id).then((bool success) {
       if (success) {
         // Jika penghapusan berhasil, bisa tambahkan logika atau tindakan lainnya
-        print("Lapangan berhasil dihapus");
+        print("Booking berhasil dihapus");
 
         // Contoh: Navigasi ke halaman lain setelah penghapusan
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (BuildContext context) => const LapanganPage()));
+            builder: (BuildContext context) => const LapangPage()));
       } else {
         // Jika penghapusan gagal, tampilkan pesan kesalahan
         showDialog(

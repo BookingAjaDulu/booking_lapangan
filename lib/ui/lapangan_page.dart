@@ -7,19 +7,19 @@ import '../bloc/logout_bloc.dart';
 import '../bloc/lapangan_bloc.dart';
 import 'login_page.dart';
 
-class LapanganPage extends StatefulWidget {
-  const LapanganPage({Key? key}) : super(key: key);
+class LapangPage extends StatefulWidget {
+  const LapangPage({Key? key}) : super(key: key);
 
   @override
-  _LapanganPageState createState() => _LapanganPageState();
+  _LapangPageState createState() => _LapangPageState();
 }
 
-class _LapanganPageState extends State<LapanganPage> {
+class _LapangPageState extends State<LapangPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('List Booking Lapangan'),
+        title: const Text('List Booking Lapang'),
         actions: [
           Padding(
               padding: const EdgeInsets.only(right: 20.0),
@@ -27,7 +27,7 @@ class _LapanganPageState extends State<LapanganPage> {
                 child: const Icon(Icons.add, size: 26.0),
                 onTap: () async {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => LapanganForm()));
+                      MaterialPageRoute(builder: (context) => LapangForm()));
                 },
               ))
         ],
@@ -51,11 +51,11 @@ class _LapanganPageState extends State<LapanganPage> {
         ),
       ),
       body: FutureBuilder<List>(
-        future: LapanganBloc.getLapangans(),
+        future: LapangBloc.getLapangs(),
         builder: (context, snapshot) {
           if (snapshot.hasError) print(snapshot.error);
           return snapshot.hasData
-              ? ListLapangan(
+              ? ListLapang(
                   list: snapshot.data,
                 )
               : const Center(
@@ -67,27 +67,27 @@ class _LapanganPageState extends State<LapanganPage> {
   }
 }
 
-class ListLapangan extends StatelessWidget {
+class ListLapang extends StatelessWidget {
   final List? list;
 
-  const ListLapangan({Key? key, this.list}) : super(key: key);
+  const ListLapang({Key? key, this.list}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
         itemCount: list == null ? 0 : list!.length,
         itemBuilder: (context, i) {
-          return ItemLapangan(
-            lapangan: list![i],
+          return ItemLapang(
+            lapang: list![i],
           );
         });
   }
 }
 
-class ItemLapangan extends StatelessWidget {
-  final Lapangan lapangan;
+class ItemLapang extends StatelessWidget {
+  final Lapang lapang;
 
-  const ItemLapangan({Key? key, required this.lapangan}) : super(key: key);
+  const ItemLapang({Key? key, required this.lapang}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -96,14 +96,14 @@ class ItemLapangan extends StatelessWidget {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => LapanganDetail(
-                      lapangan: lapangan,
+                builder: (context) => LapangDetail(
+                      lapang: lapang,
                     )));
       },
       child: Card(
         child: ListTile(
-          title: Text(lapangan.namaLapangan!),
-          subtitle: Text(lapangan.nominalLapangan.toString()),
+          title: Text(lapang.namaLapang!),
+          subtitle: Text(lapang.nominal.toString()),
         ),
       ),
     );

@@ -105,7 +105,7 @@ class _LoginPageState extends State<LoginPage> {
       await UserInfo().setToken(value.token.toString());
       await UserInfo().setUserID(int.parse(value.userID.toString()));
       Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => const LapanganPage()));
+          MaterialPageRoute(builder: (context) => const LapangPage()));
     }, onError: (error) {
       print(error);
       showDialog(
