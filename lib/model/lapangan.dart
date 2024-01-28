@@ -1,19 +1,27 @@
 class Lapangan {
   int? id;
-  String? kodeLapangan;
   String? namaLapangan;
-  int? nominalLapangan;
+  String? Tanggal;
+  String? jamMulai;
+  String? totalJamMain;
+  int? nominal;
 
   Lapangan(
-      {this.id, this.kodeLapangan, this.namaLapangan, this.nominalLapangan});
+      {this.id,
+      this.namaLapangan,
+      this.Tanggal,
+      this.jamMulai,
+      this.totalJamMain,
+      this.nominal});
 
   factory Lapangan.fromJson(Map<String, dynamic> obj) {
     return Lapangan(
       id: int.tryParse(obj['id'].toString()),
-      kodeLapangan: obj['kode_lapangan'],
       namaLapangan: obj['nama_lapangan'],
-      nominalLapangan:
-          int.tryParse(obj['nominal'].toString()), // Safely parse to int
+      Tanggal: obj['tanggal'],
+      jamMulai: obj['jam_mulai'],
+      totalJamMain: obj['total_jam_main'],
+      nominal: int.tryParse(obj['nominal'].toString()), // Safely parse to int
     );
   }
 }
